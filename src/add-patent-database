@@ -1,4 +1,4 @@
-auth="Authorization: Bearer $(cat resources/authentication/meilisearch-master-api-key)"
+auth="Authorization: Bearer $(cat ../resources/authentication/meilisearch-master-api-key)"
 
 curl \
     -X POST 'http://localhost:7700/indexes' \
