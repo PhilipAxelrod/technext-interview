@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "esbuild search-source.js --bundle --outfile=bundled-search.js"
+    "build": "esbuild ./src/search-source.js --bundle --outfile=./src/compiled-search.js",
+    "add-patent-db": "./src/add-patent-database"
   },
   "keywords": [],
   "author": "",

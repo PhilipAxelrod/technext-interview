@@ -1,0 +1,15 @@
+auth="Authorization: Bearer $(cat resources/authentication/meilisearch-master-api-key)"
+
+curl \
+    -X POST 'http://localhost:7700/indexes' \
+    -H "${auth}" \
+    -H 'Content-Type: application/json' \
+    --data-binary '{
+        "uid": "patents"
+    }'
+
+curl \
+  -X POST 'http://localhost:7700/indexes/patents/documents' \
+  -H "${auth}" \
+  -H 'Content-Type: text/csv' \
+  --data-binary '@resources/data/full_text_test_set.csv'
