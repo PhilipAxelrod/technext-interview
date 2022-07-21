@@ -3030,7 +3030,7 @@
           return {
             searchResponse: function(searchContext, searchParams, client) {
               return __awaiter(this, void 0, void 0, function() {
-                var placeholderSearch, query, pagination, paginationCache, key2, cachedResponse, facetsCache, searchResponse;
+                var placeholderSearch, query, pagination3, paginationCache, key2, cachedResponse, facetsCache, searchResponse;
                 return __generator(this, function(_a) {
                   switch (_a.label) {
                     case 0:
@@ -3038,8 +3038,8 @@
                       if (!placeholderSearch && !query) {
                         return [2, emptySearch];
                       }
-                      pagination = searchContext.pagination;
-                      paginationCache = searchContext.finitePagination ? {} : pagination;
+                      pagination3 = searchContext.pagination;
+                      paginationCache = searchContext.finitePagination ? {} : pagination3;
                       key2 = cache.formatKey([
                         searchParams,
                         searchContext.indexUid,
@@ -3262,15 +3262,15 @@
           }
           var placeholderSearch = searchContext.placeholderSearch;
           var query = searchContext.query;
-          var pagination = searchContext.pagination;
-          if (!placeholderSearch && query === "" || pagination.paginationTotalHits === 0) {
+          var pagination3 = searchContext.pagination;
+          if (!placeholderSearch && query === "" || pagination3.paginationTotalHits === 0) {
             meiliSearchParams.limit = 0;
           } else if (searchContext.finitePagination) {
-            meiliSearchParams.limit = pagination.paginationTotalHits;
+            meiliSearchParams.limit = pagination3.paginationTotalHits;
           } else {
-            var limit = (pagination.page + 1) * pagination.hitsPerPage + 1;
-            if (limit > pagination.paginationTotalHits) {
-              meiliSearchParams.limit = pagination.paginationTotalHits;
+            var limit = (pagination3.page + 1) * pagination3.hitsPerPage + 1;
+            if (limit > pagination3.paginationTotalHits) {
+              meiliSearchParams.limit = pagination3.paginationTotalHits;
             } else {
               meiliSearchParams.limit = limit;
             }
@@ -3366,13 +3366,13 @@
         function adaptSearchResponse(searchResponse, searchContext) {
           var searchResponseOptionals = {};
           var facets = searchResponse.facetDistribution;
-          var pagination = searchContext.pagination;
-          var nbPages = ceiledDivision(searchResponse.hits.length, pagination.hitsPerPage);
-          var hits3 = adaptHits(searchResponse.hits, searchContext, pagination);
+          var pagination3 = searchContext.pagination;
+          var nbPages = ceiledDivision(searchResponse.hits.length, pagination3.hitsPerPage);
+          var hits3 = adaptHits(searchResponse.hits, searchContext, pagination3);
           var estimatedTotalHits = searchResponse.estimatedTotalHits;
           var processingTimeMs = searchResponse.processingTimeMs;
           var query = searchResponse.query;
-          var hitsPerPage = pagination.hitsPerPage, page = pagination.page;
+          var hitsPerPage = pagination3.hitsPerPage, page = pagination3.page;
           var adaptedSearchResponse = __assign({ index: searchContext.indexUid, hitsPerPage, page, facets, nbPages, nbHits: estimatedTotalHits, processingTimeMS: processingTimeMs, query, hits: hits3, params: "", exhaustiveNbHits: false }, searchResponseOptionals);
           return {
             results: [adaptedSearchResponse]
@@ -3389,12 +3389,12 @@
         function createSearchContext(searchRequest, options, defaultFacetDistribution) {
           var _a = searchRequest.indexName.split(":"), indexUid = _a[0], sortByArray = _a.slice(1);
           var instantSearchParams = searchRequest.params;
-          var pagination = createPaginationContext({
+          var pagination3 = createPaginationContext({
             paginationTotalHits: options.paginationTotalHits,
             hitsPerPage: instantSearchParams === null || instantSearchParams === void 0 ? void 0 : instantSearchParams.hitsPerPage,
             page: instantSearchParams === null || instantSearchParams === void 0 ? void 0 : instantSearchParams.page
           });
-          var searchContext = __assign(__assign(__assign({}, options), instantSearchParams), { sort: sortByArray.join(":") || "", indexUid, pagination, defaultFacetDistribution, placeholderSearch: options.placeholderSearch !== false, keepZeroFacets: !!options.keepZeroFacets, finitePagination: !!options.finitePagination });
+          var searchContext = __assign(__assign(__assign({}, options), instantSearchParams), { sort: sortByArray.join(":") || "", indexUid, pagination: pagination3, defaultFacetDistribution, placeholderSearch: options.placeholderSearch !== false, keepZeroFacets: !!options.keepZeroFacets, finitePagination: !!options.finitePagination });
           return searchContext;
         }
         function SearchCache(cache) {
@@ -6577,14 +6577,14 @@
             return pass;
           },
           d: function(key2, ctx, partials, returnFound) {
-            var found, names = key2.split("."), val = this.f(names[0], ctx, partials, returnFound), doModelGet = this.options.modelGet, cx4 = null;
+            var found, names = key2.split("."), val = this.f(names[0], ctx, partials, returnFound), doModelGet = this.options.modelGet, cx6 = null;
             if (key2 === "." && isArray(ctx[ctx.length - 2])) {
               val = ctx[ctx.length - 1];
             } else {
               for (var i2 = 1; i2 < names.length; i2++) {
                 found = findInScope(names[i2], val, doModelGet);
                 if (found !== void 0) {
-                  cx4 = val;
+                  cx6 = val;
                   val = found;
                 } else {
                   val = "";
@@ -6595,7 +6595,7 @@
               return false;
             }
             if (!returnFound && typeof val == "function") {
-              ctx.push(cx4);
+              ctx.push(cx6);
               val = this.mv(val, ctx, partials);
               ctx.pop();
             }
@@ -6619,18 +6619,18 @@
             }
             return val;
           },
-          ls: function(func, cx4, partials, text, tags) {
+          ls: function(func, cx6, partials, text, tags) {
             var oldTags = this.options.delimiters;
             this.options.delimiters = tags;
-            this.b(this.ct(coerceToString(func.call(cx4, text)), cx4, partials));
+            this.b(this.ct(coerceToString(func.call(cx6, text)), cx6, partials));
             this.options.delimiters = oldTags;
             return false;
           },
-          ct: function(text, cx4, partials) {
+          ct: function(text, cx6, partials) {
             if (this.options.disableLambda) {
               throw new Error("Lambda features disabled.");
             }
-            return this.c.compile(text, this.options).render(cx4, partials);
+            return this.c.compile(text, this.options).render(cx6, partials);
           },
           b: function(s2) {
             this.buf += s2;
@@ -6641,22 +6641,22 @@
             return r2;
           },
           ms: function(func, ctx, partials, inverted, start, end, tags) {
-            var textSource, cx4 = ctx[ctx.length - 1], result = func.call(cx4);
+            var textSource, cx6 = ctx[ctx.length - 1], result = func.call(cx6);
             if (typeof result == "function") {
               if (inverted) {
                 return true;
               } else {
                 textSource = this.activeSub && this.subsText && this.subsText[this.activeSub] ? this.subsText[this.activeSub] : this.text;
-                return this.ls(result, cx4, partials, textSource.substring(start, end), tags);
+                return this.ls(result, cx6, partials, textSource.substring(start, end), tags);
               }
             }
             return result;
           },
           mv: function(func, ctx, partials) {
-            var cx4 = ctx[ctx.length - 1];
-            var result = func.call(cx4);
+            var cx6 = ctx[ctx.length - 1];
+            var result = func.call(cx6);
             if (typeof result == "function") {
-              return this.ct(coerceToString(result.call(cx4)), cx4, partials);
+              return this.ct(coerceToString(result.call(cx6)), cx6, partials);
             }
             return result;
           },
@@ -7497,6 +7497,13 @@
   }
   var getContainerNode_default = getContainerNode;
 
+  // node_modules/instantsearch.js/es/lib/utils/isSpecialClick.js
+  function isSpecialClick(event) {
+    var isMiddleClick = event.button === 1;
+    return isMiddleClick || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey;
+  }
+  var isSpecialClick_default = isSpecialClick;
+
   // node_modules/instantsearch.js/es/lib/utils/uniq.js
   function uniq(array) {
     return array.filter(function(value, index3, self2) {
@@ -7578,11 +7585,11 @@
     }
     return arr2;
   }
-  function prepareTemplates(defaultTemplates2) {
+  function prepareTemplates(defaultTemplates3) {
     var templates = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
-    var allKeys = uniq_default([].concat(_toConsumableArray(Object.keys(defaultTemplates2 || {})), _toConsumableArray(Object.keys(templates))));
+    var allKeys = uniq_default([].concat(_toConsumableArray(Object.keys(defaultTemplates3 || {})), _toConsumableArray(Object.keys(templates))));
     return allKeys.reduce(function(config, key2) {
-      var defaultTemplate2 = defaultTemplates2 ? defaultTemplates2[key2] : void 0;
+      var defaultTemplate2 = defaultTemplates3 ? defaultTemplates3[key2] : void 0;
       var customTemplate = templates[key2];
       var isCustomTemplate = customTemplate !== void 0 && customTemplate !== defaultTemplate2;
       config.templates[key2] = isCustomTemplate ? customTemplate : defaultTemplate2;
@@ -7594,8 +7601,8 @@
     });
   }
   function prepareTemplateProps(_ref) {
-    var defaultTemplates2 = _ref.defaultTemplates, templates = _ref.templates, templatesConfig = _ref.templatesConfig;
-    var preparedTemplates = prepareTemplates(defaultTemplates2, templates);
+    var defaultTemplates3 = _ref.defaultTemplates, templates = _ref.templates, templatesConfig = _ref.templatesConfig;
+    var preparedTemplates = prepareTemplates(defaultTemplates3, templates);
     return _objectSpread({
       templatesConfig
     }, preparedTemplates);
@@ -7992,6 +7999,52 @@
     return Object.getPrototypeOf(value) === proto;
   }
   var isPlainObject_default = isPlainObject;
+
+  // node_modules/instantsearch.js/es/lib/utils/range.js
+  function _toConsumableArray3(arr) {
+    return _arrayWithoutHoles3(arr) || _iterableToArray3(arr) || _unsupportedIterableToArray3(arr) || _nonIterableSpread3();
+  }
+  function _nonIterableSpread3() {
+    throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+  }
+  function _unsupportedIterableToArray3(o2, minLen) {
+    if (!o2)
+      return;
+    if (typeof o2 === "string")
+      return _arrayLikeToArray3(o2, minLen);
+    var n2 = Object.prototype.toString.call(o2).slice(8, -1);
+    if (n2 === "Object" && o2.constructor)
+      n2 = o2.constructor.name;
+    if (n2 === "Map" || n2 === "Set")
+      return Array.from(o2);
+    if (n2 === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n2))
+      return _arrayLikeToArray3(o2, minLen);
+  }
+  function _iterableToArray3(iter) {
+    if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter))
+      return Array.from(iter);
+  }
+  function _arrayWithoutHoles3(arr) {
+    if (Array.isArray(arr))
+      return _arrayLikeToArray3(arr);
+  }
+  function _arrayLikeToArray3(arr, len) {
+    if (len == null || len > arr.length)
+      len = arr.length;
+    for (var i2 = 0, arr2 = new Array(len); i2 < len; i2++) {
+      arr2[i2] = arr[i2];
+    }
+    return arr2;
+  }
+  function range(_ref) {
+    var _ref$start = _ref.start, start = _ref$start === void 0 ? 0 : _ref$start, end = _ref.end, _ref$step = _ref.step, step = _ref$step === void 0 ? 1 : _ref$step;
+    var limitStep = step === 0 ? 1 : step;
+    var arrayLength = Math.round((end - start) / limitStep);
+    return _toConsumableArray3(Array(arrayLength)).map(function(_2, current) {
+      return start + current * limitStep;
+    });
+  }
+  var range_default = range;
 
   // node_modules/instantsearch.js/es/lib/utils/isEqual.js
   function isPrimitive(obj) {
@@ -8777,34 +8830,34 @@
     }
     return obj;
   }
-  function _toConsumableArray3(arr) {
-    return _arrayWithoutHoles3(arr) || _iterableToArray3(arr) || _unsupportedIterableToArray3(arr) || _nonIterableSpread3();
+  function _toConsumableArray4(arr) {
+    return _arrayWithoutHoles4(arr) || _iterableToArray4(arr) || _unsupportedIterableToArray4(arr) || _nonIterableSpread4();
   }
-  function _nonIterableSpread3() {
+  function _nonIterableSpread4() {
     throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
   }
-  function _unsupportedIterableToArray3(o2, minLen) {
+  function _unsupportedIterableToArray4(o2, minLen) {
     if (!o2)
       return;
     if (typeof o2 === "string")
-      return _arrayLikeToArray3(o2, minLen);
+      return _arrayLikeToArray4(o2, minLen);
     var n2 = Object.prototype.toString.call(o2).slice(8, -1);
     if (n2 === "Object" && o2.constructor)
       n2 = o2.constructor.name;
     if (n2 === "Map" || n2 === "Set")
       return Array.from(o2);
     if (n2 === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n2))
-      return _arrayLikeToArray3(o2, minLen);
+      return _arrayLikeToArray4(o2, minLen);
   }
-  function _iterableToArray3(iter) {
+  function _iterableToArray4(iter) {
     if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter))
       return Array.from(iter);
   }
-  function _arrayWithoutHoles3(arr) {
+  function _arrayWithoutHoles4(arr) {
     if (Array.isArray(arr))
-      return _arrayLikeToArray3(arr);
+      return _arrayLikeToArray4(arr);
   }
-  function _arrayLikeToArray3(arr, len) {
+  function _arrayLikeToArray4(arr, len) {
     if (len == null || len > arr.length)
       len = arr.length;
     for (var i2 = 0, arr2 = new Array(len); i2 < len; i2++) {
@@ -8909,7 +8962,7 @@
         indexId: current.getIndexId(),
         results: current.getResults(),
         helper: current.getHelper()
-      }].concat(_toConsumableArray3(resolveScopedResultsFromWidgets(current.getWidgets()))));
+      }].concat(_toConsumableArray4(resolveScopedResultsFromWidgets(current.getWidgets()))));
     }, []);
   }
   var index = function index2(widgetParams) {
@@ -9090,7 +9143,7 @@
           return mainHelper.searchForFacetValues(facetName, facetValue, maxFacetHits, state);
         };
         derivedHelper = mainHelper.derive(function() {
-          return mergeSearchParameters_default.apply(void 0, _toConsumableArray3(resolveSearchParameters_default(_this3)));
+          return mergeSearchParameters_default.apply(void 0, _toConsumableArray4(resolveSearchParameters_default(_this3)));
         });
         var indexInitialResults = (_instantSearchInstanc = instantSearchInstance._initialResults) === null || _instantSearchInstanc === void 0 ? void 0 : _instantSearchInstanc[this.getIndexId()];
         if (indexInitialResults) {
@@ -12276,18 +12329,198 @@ import { connectSearchBox } from 'instantsearch.js/es/connectors'`);
   };
   var hits_default = hits;
 
-  // node_modules/instantsearch.js/es/widgets/search-box/defaultTemplates.js
-  var defaultTemplate = {
-    reset: '\n<svg class="{{cssClasses.resetIcon}}" viewBox="0 0 20 20" width="10" height="10">\n  <path d="M8.114 10L.944 2.83 0 1.885 1.886 0l.943.943L10 8.113l7.17-7.17.944-.943L20 1.886l-.943.943-7.17 7.17 7.17 7.17.943.944L18.114 20l-.943-.943-7.17-7.17-7.17 7.17-.944.943L0 18.114l.943-.943L8.113 10z"></path>\n</svg>\n  ',
-    submit: '\n<svg class="{{cssClasses.submitIcon}}" width="10" height="10" viewBox="0 0 40 40">\n  <path d="M26.804 29.01c-2.832 2.34-6.465 3.746-10.426 3.746C7.333 32.756 0 25.424 0 16.378 0 7.333 7.333 0 16.378 0c9.046 0 16.378 7.333 16.378 16.378 0 3.96-1.406 7.594-3.746 10.426l10.534 10.534c.607.607.61 1.59-.004 2.202-.61.61-1.597.61-2.202.004L26.804 29.01zm-10.426.627c7.323 0 13.26-5.936 13.26-13.26 0-7.32-5.937-13.257-13.26-13.257C9.056 3.12 3.12 9.056 3.12 16.378c0 7.323 5.936 13.26 13.258 13.26z"></path>\n</svg>\n  ',
-    loadingIndicator: '\n<svg class="{{cssClasses.loadingIcon}}" width="16" height="16" viewBox="0 0 38 38" stroke="#444">\n  <g fill="none" fillRule="evenodd">\n    <g transform="translate(1 1)" strokeWidth="2">\n      <circle strokeOpacity=".5" cx="18" cy="18" r="18" />\n      <path d="M36 18c0-9.94-8.06-18-18-18">\n        <animateTransform\n          attributeName="transform"\n          type="rotate"\n          from="0 18 18"\n          to="360 18 18"\n          dur="1s"\n          repeatCount="indefinite"\n        />\n      </path>\n    </g>\n  </g>\n</svg>\n  '
-  };
-  var defaultTemplates_default2 = defaultTemplate;
+  // node_modules/instantsearch.js/es/widgets/pagination/pagination.js
+  var import_classnames4 = __toESM(require_classnames(), 1);
 
-  // node_modules/instantsearch.js/es/widgets/search-box/search-box.js
+  // node_modules/instantsearch.js/es/components/Pagination/Pagination.js
   var import_classnames3 = __toESM(require_classnames(), 1);
+  function _defineProperty24(obj, key2, value) {
+    if (key2 in obj) {
+      Object.defineProperty(obj, key2, { value, enumerable: true, configurable: true, writable: true });
+    } else {
+      obj[key2] = value;
+    }
+    return obj;
+  }
+  function Pagination(props) {
+    function createClickHandler(pageNumber) {
+      return function(event) {
+        if (isSpecialClick_default(event)) {
+          return;
+        }
+        event.preventDefault();
+        props.setCurrentPage(pageNumber);
+      };
+    }
+    return h("div", {
+      className: (0, import_classnames3.default)(props.cssClasses.root, _defineProperty24({}, props.cssClasses.noRefinementRoot, props.nbPages <= 1))
+    }, h("ul", {
+      className: props.cssClasses.list
+    }, props.showFirst && h(PaginationLink, {
+      ariaLabel: "First",
+      className: props.cssClasses.firstPageItem,
+      isDisabled: props.isFirstPage,
+      label: props.templates.first,
+      pageNumber: 0,
+      createURL: props.createURL,
+      cssClasses: props.cssClasses,
+      createClickHandler
+    }), props.showPrevious && h(PaginationLink, {
+      ariaLabel: "Previous",
+      className: props.cssClasses.previousPageItem,
+      isDisabled: props.isFirstPage,
+      label: props.templates.previous,
+      pageNumber: props.currentPage - 1,
+      createURL: props.createURL,
+      cssClasses: props.cssClasses,
+      createClickHandler
+    }), props.pages.map(function(pageNumber) {
+      return h(PaginationLink, {
+        key: pageNumber,
+        ariaLabel: "".concat(pageNumber + 1),
+        className: props.cssClasses.pageItem,
+        isSelected: pageNumber === props.currentPage,
+        label: "".concat(pageNumber + 1),
+        pageNumber,
+        createURL: props.createURL,
+        cssClasses: props.cssClasses,
+        createClickHandler
+      });
+    }), props.showNext && h(PaginationLink, {
+      ariaLabel: "Next",
+      className: props.cssClasses.nextPageItem,
+      isDisabled: props.isLastPage,
+      label: props.templates.next,
+      pageNumber: props.currentPage + 1,
+      createURL: props.createURL,
+      cssClasses: props.cssClasses,
+      createClickHandler
+    }), props.showLast && h(PaginationLink, {
+      ariaLabel: "Last",
+      className: props.cssClasses.lastPageItem,
+      isDisabled: props.isLastPage,
+      label: props.templates.last,
+      pageNumber: props.nbPages - 1,
+      createURL: props.createURL,
+      cssClasses: props.cssClasses,
+      createClickHandler
+    })));
+  }
+  function PaginationLink(_ref) {
+    var label = _ref.label, ariaLabel = _ref.ariaLabel, pageNumber = _ref.pageNumber, className = _ref.className, _ref$isDisabled = _ref.isDisabled, isDisabled = _ref$isDisabled === void 0 ? false : _ref$isDisabled, _ref$isSelected = _ref.isSelected, isSelected = _ref$isSelected === void 0 ? false : _ref$isSelected, cssClasses = _ref.cssClasses, createURL = _ref.createURL, createClickHandler = _ref.createClickHandler;
+    return h("li", {
+      className: (0, import_classnames3.default)(cssClasses.item, className, isDisabled && cssClasses.disabledItem, isSelected && cssClasses.selectedItem)
+    }, isDisabled ? h("span", {
+      className: cssClasses.link,
+      dangerouslySetInnerHTML: {
+        __html: label
+      }
+    }) : h("a", {
+      className: cssClasses.link,
+      "aria-label": ariaLabel,
+      href: createURL(pageNumber),
+      onClick: createClickHandler(pageNumber),
+      dangerouslySetInnerHTML: {
+        __html: label
+      }
+    }));
+  }
+  var Pagination_default = Pagination;
 
-  // node_modules/instantsearch.js/es/connectors/search-box/connectSearchBox.js
+  // node_modules/instantsearch.js/es/connectors/pagination/Paginator.js
+  function _classCallCheck5(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+  function _defineProperties5(target, props) {
+    for (var i2 = 0; i2 < props.length; i2++) {
+      var descriptor = props[i2];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor)
+        descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
+  function _createClass5(Constructor, protoProps, staticProps) {
+    if (protoProps)
+      _defineProperties5(Constructor.prototype, protoProps);
+    if (staticProps)
+      _defineProperties5(Constructor, staticProps);
+    return Constructor;
+  }
+  function _defineProperty25(obj, key2, value) {
+    if (key2 in obj) {
+      Object.defineProperty(obj, key2, { value, enumerable: true, configurable: true, writable: true });
+    } else {
+      obj[key2] = value;
+    }
+    return obj;
+  }
+  var Paginator = /* @__PURE__ */ function() {
+    function Paginator2(params) {
+      _classCallCheck5(this, Paginator2);
+      _defineProperty25(this, "currentPage", void 0);
+      _defineProperty25(this, "total", void 0);
+      _defineProperty25(this, "padding", void 0);
+      this.currentPage = params.currentPage;
+      this.total = params.total;
+      this.padding = params.padding;
+    }
+    _createClass5(Paginator2, [{
+      key: "pages",
+      value: function pages() {
+        var total = this.total, currentPage = this.currentPage, padding = this.padding;
+        if (total === 0)
+          return [0];
+        var totalDisplayedPages = this.nbPagesDisplayed(padding, total);
+        if (totalDisplayedPages === total) {
+          return range_default({
+            end: total
+          });
+        }
+        var paddingLeft = this.calculatePaddingLeft(currentPage, padding, total, totalDisplayedPages);
+        var paddingRight = totalDisplayedPages - paddingLeft;
+        var first = currentPage - paddingLeft;
+        var last = currentPage + paddingRight;
+        return range_default({
+          start: first,
+          end: last
+        });
+      }
+    }, {
+      key: "nbPagesDisplayed",
+      value: function nbPagesDisplayed(padding, total) {
+        return Math.min(2 * padding + 1, total);
+      }
+    }, {
+      key: "calculatePaddingLeft",
+      value: function calculatePaddingLeft(current, padding, total, totalDisplayedPages) {
+        if (current <= padding) {
+          return current;
+        }
+        if (current >= total - padding) {
+          return totalDisplayedPages - (total - current);
+        }
+        return padding;
+      }
+    }, {
+      key: "isLastPage",
+      value: function isLastPage() {
+        return this.currentPage === this.total - 1 || this.total === 0;
+      }
+    }, {
+      key: "isFirstPage",
+      value: function isFirstPage() {
+        return this.currentPage === 0;
+      }
+    }]);
+    return Paginator2;
+  }();
+  var Paginator_default = Paginator;
+
+  // node_modules/instantsearch.js/es/connectors/pagination/connectPagination.js
   function ownKeys21(object, enumerableOnly) {
     var keys2 = Object.keys(object);
     if (Object.getOwnPropertySymbols) {
@@ -12305,7 +12538,7 @@ import { connectSearchBox } from 'instantsearch.js/es/connectors'`);
       var source = arguments[i2] != null ? arguments[i2] : {};
       if (i2 % 2) {
         ownKeys21(Object(source), true).forEach(function(key2) {
-          _defineProperty24(target, key2, source[key2]);
+          _defineProperty26(target, key2, source[key2]);
         });
       } else if (Object.getOwnPropertyDescriptors) {
         Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
@@ -12317,7 +12550,7 @@ import { connectSearchBox } from 'instantsearch.js/es/connectors'`);
     }
     return target;
   }
-  function _defineProperty24(obj, key2, value) {
+  function _defineProperty26(obj, key2, value) {
     if (key2 in obj) {
       Object.defineProperty(obj, key2, { value, enumerable: true, configurable: true, writable: true });
     } else {
@@ -12326,21 +12559,26 @@ import { connectSearchBox } from 'instantsearch.js/es/connectors'`);
     return obj;
   }
   var withUsage8 = createDocumentationMessageGenerator({
-    name: "search-box",
+    name: "pagination",
     connector: true
   });
-  var defaultQueryHook = function defaultQueryHook2(query, hook) {
-    return hook(query);
-  };
-  var connectSearchBox = function connectSearchBox2(renderFn) {
+  var connectPagination = function connectPagination2(renderFn) {
     var unmountFn = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : noop_default;
     checkRendering_default(renderFn, withUsage8());
     return function(widgetParams) {
-      var _ref = widgetParams || {}, _ref$queryHook = _ref.queryHook, queryHook = _ref$queryHook === void 0 ? defaultQueryHook : _ref$queryHook;
-      var _refine;
-      var _clear;
+      var _ref = widgetParams || {}, totalPages = _ref.totalPages, _ref$padding = _ref.padding, padding = _ref$padding === void 0 ? 3 : _ref$padding;
+      var pager = new Paginator_default({
+        currentPage: 0,
+        total: 0,
+        padding
+      });
+      var connectorState = {};
+      function getMaxPage(_ref2) {
+        var nbPages = _ref2.nbPages;
+        return totalPages !== void 0 ? Math.min(totalPages, nbPages) : nbPages;
+      }
       return {
-        $$type: "ais.searchBox",
+        $$type: "ais.pagination",
         init: function init(initOptions) {
           var instantSearchInstance = initOptions.instantSearchInstance;
           renderFn(_objectSpread21(_objectSpread21({}, this.getWidgetRenderState(initOptions)), {}, {
@@ -12353,13 +12591,305 @@ import { connectSearchBox } from 'instantsearch.js/es/connectors'`);
             instantSearchInstance
           }), false);
         },
+        dispose: function dispose(_ref3) {
+          var state = _ref3.state;
+          unmountFn();
+          return state.setQueryParameter("page", void 0);
+        },
+        getWidgetUiState: function getWidgetUiState(uiState, _ref4) {
+          var searchParameters = _ref4.searchParameters;
+          var page = searchParameters.page || 0;
+          if (!page) {
+            return uiState;
+          }
+          return _objectSpread21(_objectSpread21({}, uiState), {}, {
+            page: page + 1
+          });
+        },
+        getWidgetSearchParameters: function getWidgetSearchParameters(searchParameters, _ref5) {
+          var uiState = _ref5.uiState;
+          var page = uiState.page ? uiState.page - 1 : 0;
+          return searchParameters.setQueryParameter("page", page);
+        },
+        getWidgetRenderState: function getWidgetRenderState(_ref6) {
+          var results = _ref6.results, helper = _ref6.helper, state = _ref6.state, createURL = _ref6.createURL;
+          if (!connectorState.refine) {
+            connectorState.refine = function(page2) {
+              helper.setPage(page2);
+              helper.search();
+            };
+          }
+          if (!connectorState.createURL) {
+            connectorState.createURL = function(helperState) {
+              return function(page2) {
+                return createURL(helperState.setPage(page2));
+              };
+            };
+          }
+          var page = state.page || 0;
+          var nbPages = getMaxPage(results || {
+            nbPages: 0
+          });
+          pager.currentPage = page;
+          pager.total = nbPages;
+          return {
+            createURL: connectorState.createURL(state),
+            refine: connectorState.refine,
+            canRefine: nbPages > 1,
+            currentRefinement: page,
+            nbHits: (results === null || results === void 0 ? void 0 : results.nbHits) || 0,
+            nbPages,
+            pages: results ? pager.pages() : [],
+            isFirstPage: pager.isFirstPage(),
+            isLastPage: pager.isLastPage(),
+            widgetParams
+          };
+        },
+        getRenderState: function getRenderState(renderState, renderOptions) {
+          return _objectSpread21(_objectSpread21({}, renderState), {}, {
+            pagination: this.getWidgetRenderState(renderOptions)
+          });
+        }
+      };
+    };
+  };
+  var connectPagination_default = connectPagination;
+
+  // node_modules/instantsearch.js/es/widgets/pagination/pagination.js
+  function ownKeys22(object, enumerableOnly) {
+    var keys2 = Object.keys(object);
+    if (Object.getOwnPropertySymbols) {
+      var symbols = Object.getOwnPropertySymbols(object);
+      if (enumerableOnly)
+        symbols = symbols.filter(function(sym) {
+          return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+        });
+      keys2.push.apply(keys2, symbols);
+    }
+    return keys2;
+  }
+  function _objectSpread22(target) {
+    for (var i2 = 1; i2 < arguments.length; i2++) {
+      var source = arguments[i2] != null ? arguments[i2] : {};
+      if (i2 % 2) {
+        ownKeys22(Object(source), true).forEach(function(key2) {
+          _defineProperty27(target, key2, source[key2]);
+        });
+      } else if (Object.getOwnPropertyDescriptors) {
+        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+      } else {
+        ownKeys22(Object(source)).forEach(function(key2) {
+          Object.defineProperty(target, key2, Object.getOwnPropertyDescriptor(source, key2));
+        });
+      }
+    }
+    return target;
+  }
+  function _defineProperty27(obj, key2, value) {
+    if (key2 in obj) {
+      Object.defineProperty(obj, key2, { value, enumerable: true, configurable: true, writable: true });
+    } else {
+      obj[key2] = value;
+    }
+    return obj;
+  }
+  var suit7 = component("Pagination");
+  var withUsage9 = createDocumentationMessageGenerator({
+    name: "pagination"
+  });
+  var defaultTemplates2 = {
+    previous: "\u2039",
+    next: "\u203A",
+    first: "\xAB",
+    last: "\xBB"
+  };
+  var renderer3 = function renderer4(_ref) {
+    var containerNode = _ref.containerNode, cssClasses = _ref.cssClasses, templates = _ref.templates, showFirst = _ref.showFirst, showLast = _ref.showLast, showPrevious = _ref.showPrevious, showNext = _ref.showNext, scrollToNode = _ref.scrollToNode;
+    return function(_ref2, isFirstRendering) {
+      var createURL = _ref2.createURL, currentRefinement = _ref2.currentRefinement, nbPages = _ref2.nbPages, pages = _ref2.pages, isFirstPage = _ref2.isFirstPage, isLastPage = _ref2.isLastPage, refine = _ref2.refine;
+      if (isFirstRendering)
+        return;
+      var setCurrentPage = function setCurrentPage2(pageNumber) {
+        refine(pageNumber);
+        if (scrollToNode !== false) {
+          scrollToNode.scrollIntoView();
+        }
+      };
+      P(h(Pagination_default, {
+        createURL,
+        cssClasses,
+        currentPage: currentRefinement,
+        templates,
+        nbPages,
+        pages,
+        isFirstPage,
+        isLastPage,
+        setCurrentPage,
+        showFirst,
+        showLast,
+        showPrevious,
+        showNext
+      }), containerNode);
+    };
+  };
+  var pagination = function pagination2(widgetParams) {
+    var _ref3 = widgetParams || {}, container = _ref3.container, _ref3$templates = _ref3.templates, userTemplates = _ref3$templates === void 0 ? {} : _ref3$templates, _ref3$cssClasses = _ref3.cssClasses, userCssClasses = _ref3$cssClasses === void 0 ? {} : _ref3$cssClasses, totalPages = _ref3.totalPages, padding = _ref3.padding, _ref3$showFirst = _ref3.showFirst, showFirst = _ref3$showFirst === void 0 ? true : _ref3$showFirst, _ref3$showLast = _ref3.showLast, showLast = _ref3$showLast === void 0 ? true : _ref3$showLast, _ref3$showPrevious = _ref3.showPrevious, showPrevious = _ref3$showPrevious === void 0 ? true : _ref3$showPrevious, _ref3$showNext = _ref3.showNext, showNext = _ref3$showNext === void 0 ? true : _ref3$showNext, _ref3$scrollTo = _ref3.scrollTo, userScrollTo = _ref3$scrollTo === void 0 ? "body" : _ref3$scrollTo;
+    if (!container) {
+      throw new Error(withUsage9("The `container` option is required."));
+    }
+    var containerNode = getContainerNode_default(container);
+    var scrollTo = userScrollTo === true ? "body" : userScrollTo;
+    var scrollToNode = scrollTo !== false ? getContainerNode_default(scrollTo) : false;
+    var cssClasses = {
+      root: (0, import_classnames4.default)(suit7(), userCssClasses.root),
+      noRefinementRoot: (0, import_classnames4.default)(suit7({
+        modifierName: "noRefinement"
+      }), userCssClasses.noRefinementRoot),
+      list: (0, import_classnames4.default)(suit7({
+        descendantName: "list"
+      }), userCssClasses.list),
+      item: (0, import_classnames4.default)(suit7({
+        descendantName: "item"
+      }), userCssClasses.item),
+      firstPageItem: (0, import_classnames4.default)(suit7({
+        descendantName: "item",
+        modifierName: "firstPage"
+      }), userCssClasses.firstPageItem),
+      lastPageItem: (0, import_classnames4.default)(suit7({
+        descendantName: "item",
+        modifierName: "lastPage"
+      }), userCssClasses.lastPageItem),
+      previousPageItem: (0, import_classnames4.default)(suit7({
+        descendantName: "item",
+        modifierName: "previousPage"
+      }), userCssClasses.previousPageItem),
+      nextPageItem: (0, import_classnames4.default)(suit7({
+        descendantName: "item",
+        modifierName: "nextPage"
+      }), userCssClasses.nextPageItem),
+      pageItem: (0, import_classnames4.default)(suit7({
+        descendantName: "item",
+        modifierName: "page"
+      }), userCssClasses.pageItem),
+      selectedItem: (0, import_classnames4.default)(suit7({
+        descendantName: "item",
+        modifierName: "selected"
+      }), userCssClasses.selectedItem),
+      disabledItem: (0, import_classnames4.default)(suit7({
+        descendantName: "item",
+        modifierName: "disabled"
+      }), userCssClasses.disabledItem),
+      link: (0, import_classnames4.default)(suit7({
+        descendantName: "link"
+      }), userCssClasses.link)
+    };
+    var templates = _objectSpread22(_objectSpread22({}, defaultTemplates2), userTemplates);
+    var specializedRenderer = renderer3({
+      containerNode,
+      cssClasses,
+      templates,
+      showFirst,
+      showLast,
+      showPrevious,
+      showNext,
+      scrollToNode
+    });
+    var makeWidget = connectPagination_default(specializedRenderer, function() {
+      return P(null, containerNode);
+    });
+    return _objectSpread22(_objectSpread22({}, makeWidget({
+      totalPages,
+      padding
+    })), {}, {
+      $$widgetType: "ais.pagination"
+    });
+  };
+  var pagination_default = pagination;
+
+  // node_modules/instantsearch.js/es/widgets/search-box/defaultTemplates.js
+  var defaultTemplate = {
+    reset: '\n<svg class="{{cssClasses.resetIcon}}" viewBox="0 0 20 20" width="10" height="10">\n  <path d="M8.114 10L.944 2.83 0 1.885 1.886 0l.943.943L10 8.113l7.17-7.17.944-.943L20 1.886l-.943.943-7.17 7.17 7.17 7.17.943.944L18.114 20l-.943-.943-7.17-7.17-7.17 7.17-.944.943L0 18.114l.943-.943L8.113 10z"></path>\n</svg>\n  ',
+    submit: '\n<svg class="{{cssClasses.submitIcon}}" width="10" height="10" viewBox="0 0 40 40">\n  <path d="M26.804 29.01c-2.832 2.34-6.465 3.746-10.426 3.746C7.333 32.756 0 25.424 0 16.378 0 7.333 7.333 0 16.378 0c9.046 0 16.378 7.333 16.378 16.378 0 3.96-1.406 7.594-3.746 10.426l10.534 10.534c.607.607.61 1.59-.004 2.202-.61.61-1.597.61-2.202.004L26.804 29.01zm-10.426.627c7.323 0 13.26-5.936 13.26-13.26 0-7.32-5.937-13.257-13.26-13.257C9.056 3.12 3.12 9.056 3.12 16.378c0 7.323 5.936 13.26 13.258 13.26z"></path>\n</svg>\n  ',
+    loadingIndicator: '\n<svg class="{{cssClasses.loadingIcon}}" width="16" height="16" viewBox="0 0 38 38" stroke="#444">\n  <g fill="none" fillRule="evenodd">\n    <g transform="translate(1 1)" strokeWidth="2">\n      <circle strokeOpacity=".5" cx="18" cy="18" r="18" />\n      <path d="M36 18c0-9.94-8.06-18-18-18">\n        <animateTransform\n          attributeName="transform"\n          type="rotate"\n          from="0 18 18"\n          to="360 18 18"\n          dur="1s"\n          repeatCount="indefinite"\n        />\n      </path>\n    </g>\n  </g>\n</svg>\n  '
+  };
+  var defaultTemplates_default2 = defaultTemplate;
+
+  // node_modules/instantsearch.js/es/widgets/search-box/search-box.js
+  var import_classnames5 = __toESM(require_classnames(), 1);
+
+  // node_modules/instantsearch.js/es/connectors/search-box/connectSearchBox.js
+  function ownKeys23(object, enumerableOnly) {
+    var keys2 = Object.keys(object);
+    if (Object.getOwnPropertySymbols) {
+      var symbols = Object.getOwnPropertySymbols(object);
+      if (enumerableOnly)
+        symbols = symbols.filter(function(sym) {
+          return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+        });
+      keys2.push.apply(keys2, symbols);
+    }
+    return keys2;
+  }
+  function _objectSpread23(target) {
+    for (var i2 = 1; i2 < arguments.length; i2++) {
+      var source = arguments[i2] != null ? arguments[i2] : {};
+      if (i2 % 2) {
+        ownKeys23(Object(source), true).forEach(function(key2) {
+          _defineProperty28(target, key2, source[key2]);
+        });
+      } else if (Object.getOwnPropertyDescriptors) {
+        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+      } else {
+        ownKeys23(Object(source)).forEach(function(key2) {
+          Object.defineProperty(target, key2, Object.getOwnPropertyDescriptor(source, key2));
+        });
+      }
+    }
+    return target;
+  }
+  function _defineProperty28(obj, key2, value) {
+    if (key2 in obj) {
+      Object.defineProperty(obj, key2, { value, enumerable: true, configurable: true, writable: true });
+    } else {
+      obj[key2] = value;
+    }
+    return obj;
+  }
+  var withUsage10 = createDocumentationMessageGenerator({
+    name: "search-box",
+    connector: true
+  });
+  var defaultQueryHook = function defaultQueryHook2(query, hook) {
+    return hook(query);
+  };
+  var connectSearchBox = function connectSearchBox2(renderFn) {
+    var unmountFn = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : noop_default;
+    checkRendering_default(renderFn, withUsage10());
+    return function(widgetParams) {
+      var _ref = widgetParams || {}, _ref$queryHook = _ref.queryHook, queryHook = _ref$queryHook === void 0 ? defaultQueryHook : _ref$queryHook;
+      var _refine;
+      var _clear;
+      return {
+        $$type: "ais.searchBox",
+        init: function init(initOptions) {
+          var instantSearchInstance = initOptions.instantSearchInstance;
+          renderFn(_objectSpread23(_objectSpread23({}, this.getWidgetRenderState(initOptions)), {}, {
+            instantSearchInstance
+          }), true);
+        },
+        render: function render(renderOptions) {
+          var instantSearchInstance = renderOptions.instantSearchInstance;
+          renderFn(_objectSpread23(_objectSpread23({}, this.getWidgetRenderState(renderOptions)), {}, {
+            instantSearchInstance
+          }), false);
+        },
         dispose: function dispose(_ref2) {
           var state = _ref2.state;
           unmountFn();
           return state.setQueryParameter("query", void 0);
         },
         getRenderState: function getRenderState(renderState, renderOptions) {
-          return _objectSpread21(_objectSpread21({}, renderState), {}, {
+          return _objectSpread23(_objectSpread23({}, renderState), {}, {
             searchBox: this.getWidgetRenderState(renderOptions)
           });
         },
@@ -12389,7 +12919,7 @@ import { connectSearchBox } from 'instantsearch.js/es/connectors'`);
           if (query === "" || uiState && uiState.query === query) {
             return uiState;
           }
-          return _objectSpread21(_objectSpread21({}, uiState), {}, {
+          return _objectSpread23(_objectSpread23({}, uiState), {}, {
             query
           });
         },
@@ -12403,7 +12933,7 @@ import { connectSearchBox } from 'instantsearch.js/es/connectors'`);
   var connectSearchBox_default = connectSearchBox;
 
   // node_modules/instantsearch.js/es/widgets/search-box/search-box.js
-  function ownKeys22(object, enumerableOnly) {
+  function ownKeys24(object, enumerableOnly) {
     var keys2 = Object.keys(object);
     if (Object.getOwnPropertySymbols) {
       var symbols = Object.getOwnPropertySymbols(object);
@@ -12415,24 +12945,24 @@ import { connectSearchBox } from 'instantsearch.js/es/connectors'`);
     }
     return keys2;
   }
-  function _objectSpread22(target) {
+  function _objectSpread24(target) {
     for (var i2 = 1; i2 < arguments.length; i2++) {
       var source = arguments[i2] != null ? arguments[i2] : {};
       if (i2 % 2) {
-        ownKeys22(Object(source), true).forEach(function(key2) {
-          _defineProperty25(target, key2, source[key2]);
+        ownKeys24(Object(source), true).forEach(function(key2) {
+          _defineProperty29(target, key2, source[key2]);
         });
       } else if (Object.getOwnPropertyDescriptors) {
         Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
       } else {
-        ownKeys22(Object(source)).forEach(function(key2) {
+        ownKeys24(Object(source)).forEach(function(key2) {
           Object.defineProperty(target, key2, Object.getOwnPropertyDescriptor(source, key2));
         });
       }
     }
     return target;
   }
-  function _defineProperty25(obj, key2, value) {
+  function _defineProperty29(obj, key2, value) {
     if (key2 in obj) {
       Object.defineProperty(obj, key2, { value, enumerable: true, configurable: true, writable: true });
     } else {
@@ -12440,11 +12970,11 @@ import { connectSearchBox } from 'instantsearch.js/es/connectors'`);
     }
     return obj;
   }
-  var withUsage9 = createDocumentationMessageGenerator({
+  var withUsage11 = createDocumentationMessageGenerator({
     name: "search-box"
   });
-  var suit7 = component("SearchBox");
-  var renderer3 = function renderer4(_ref) {
+  var suit8 = component("SearchBox");
+  var renderer5 = function renderer6(_ref) {
     var containerNode = _ref.containerNode, cssClasses = _ref.cssClasses, placeholder = _ref.placeholder, templates = _ref.templates, autofocus = _ref.autofocus, searchAsYouType = _ref.searchAsYouType, showReset = _ref.showReset, showSubmit = _ref.showSubmit, showLoadingIndicator = _ref.showLoadingIndicator;
     return function(_ref2) {
       var refine = _ref2.refine, query = _ref2.query, isSearchStalled = _ref2.isSearchStalled;
@@ -12466,38 +12996,38 @@ import { connectSearchBox } from 'instantsearch.js/es/connectors'`);
   var searchBox = function searchBox2(widgetParams) {
     var _ref3 = widgetParams || {}, container = _ref3.container, _ref3$placeholder = _ref3.placeholder, placeholder = _ref3$placeholder === void 0 ? "" : _ref3$placeholder, _ref3$cssClasses = _ref3.cssClasses, userCssClasses = _ref3$cssClasses === void 0 ? {} : _ref3$cssClasses, _ref3$autofocus = _ref3.autofocus, autofocus = _ref3$autofocus === void 0 ? false : _ref3$autofocus, _ref3$searchAsYouType = _ref3.searchAsYouType, searchAsYouType = _ref3$searchAsYouType === void 0 ? true : _ref3$searchAsYouType, _ref3$showReset = _ref3.showReset, showReset = _ref3$showReset === void 0 ? true : _ref3$showReset, _ref3$showSubmit = _ref3.showSubmit, showSubmit = _ref3$showSubmit === void 0 ? true : _ref3$showSubmit, _ref3$showLoadingIndi = _ref3.showLoadingIndicator, showLoadingIndicator = _ref3$showLoadingIndi === void 0 ? true : _ref3$showLoadingIndi, queryHook = _ref3.queryHook, _ref3$templates = _ref3.templates, userTemplates = _ref3$templates === void 0 ? {} : _ref3$templates;
     if (!container) {
-      throw new Error(withUsage9("The `container` option is required."));
+      throw new Error(withUsage11("The `container` option is required."));
     }
     var containerNode = getContainerNode_default(container);
     var cssClasses = {
-      root: (0, import_classnames3.default)(suit7(), userCssClasses.root),
-      form: (0, import_classnames3.default)(suit7({
+      root: (0, import_classnames5.default)(suit8(), userCssClasses.root),
+      form: (0, import_classnames5.default)(suit8({
         descendantName: "form"
       }), userCssClasses.form),
-      input: (0, import_classnames3.default)(suit7({
+      input: (0, import_classnames5.default)(suit8({
         descendantName: "input"
       }), userCssClasses.input),
-      submit: (0, import_classnames3.default)(suit7({
+      submit: (0, import_classnames5.default)(suit8({
         descendantName: "submit"
       }), userCssClasses.submit),
-      submitIcon: (0, import_classnames3.default)(suit7({
+      submitIcon: (0, import_classnames5.default)(suit8({
         descendantName: "submitIcon"
       }), userCssClasses.submitIcon),
-      reset: (0, import_classnames3.default)(suit7({
+      reset: (0, import_classnames5.default)(suit8({
         descendantName: "reset"
       }), userCssClasses.reset),
-      resetIcon: (0, import_classnames3.default)(suit7({
+      resetIcon: (0, import_classnames5.default)(suit8({
         descendantName: "resetIcon"
       }), userCssClasses.resetIcon),
-      loadingIndicator: (0, import_classnames3.default)(suit7({
+      loadingIndicator: (0, import_classnames5.default)(suit8({
         descendantName: "loadingIndicator"
       }), userCssClasses.loadingIndicator),
-      loadingIcon: (0, import_classnames3.default)(suit7({
+      loadingIcon: (0, import_classnames5.default)(suit8({
         descendantName: "loadingIcon"
       }), userCssClasses.loadingIcon)
     };
-    var templates = _objectSpread22(_objectSpread22({}, defaultTemplates_default2), userTemplates);
-    var specializedRenderer = renderer3({
+    var templates = _objectSpread24(_objectSpread24({}, defaultTemplates_default2), userTemplates);
+    var specializedRenderer = renderer5({
       containerNode,
       cssClasses,
       placeholder,
@@ -12511,7 +13041,7 @@ import { connectSearchBox } from 'instantsearch.js/es/connectors'`);
     var makeWidget = connectSearchBox_default(specializedRenderer, function() {
       return P(null, containerNode);
     });
-    return _objectSpread22(_objectSpread22({}, makeWidget({
+    return _objectSpread24(_objectSpread24({}, makeWidget({
       queryHook
     })), {}, {
       $$widgetType: "ais.searchBox"
@@ -12525,7 +13055,9 @@ import { connectSearchBox } from 'instantsearch.js/es/connectors'`);
   // src/search-source.js
   var search = es_default({
     indexName: "patents",
-    searchClient: (0, import_instant_meilisearch.instantMeiliSearch)("http://localhost:7700", "628d7d1c524e967c44c8c67c72db2ede011a93ab527e276cc4cee3dec5607c90")
+    searchClient: (0, import_instant_meilisearch.instantMeiliSearch)("http://localhost:7700", "628d7d1c524e967c44c8c67c72db2ede011a93ab527e276cc4cee3dec5607c90", {
+      finitePagination: true
+    })
   });
   search.addWidgets([
     search_box_default({
@@ -12540,7 +13072,7 @@ import { connectSearchBox } from 'instantsearch.js/es/connectors'`);
         item(hit) {
           return `
                     <div>
-                        <h3>IdL ${hit.patent_id}</h3>
+                        <h3>Id: ${hit.patent_id}</h3>
                         <p> 
                             ${es_default.highlight({ attribute: "patent_text", hit })} 
                         </p>
@@ -12548,6 +13080,9 @@ import { connectSearchBox } from 'instantsearch.js/es/connectors'`);
                 `;
         }
       }
+    }),
+    pagination_default({
+      container: "#pagination"
     })
   ]);
   search.start();
