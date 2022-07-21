@@ -24,7 +24,7 @@ search.addWidgets([
             item(hit) {
                 return `
                     <div>
-                        <h3>IdL ${hit.patent_id}</h3>
+                        <h3>Id: ${hit.patent_id}</h3>
                         <p> 
                             ${instantsearch.highlight({ attribute: 'patent_text', hit })} 
                         </p>
