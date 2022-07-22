@@ -13062,7 +13062,6 @@ import { connectSearchBox } from 'instantsearch.js/es/connectors'`);
     } else {
       request.open("GET", `https://${location.host}/technext-interview/resources/addresses/meilisearch-address`, false);
       request.send();
-      console.log(request.responseText);
       return request.responseText;
     }
   }
