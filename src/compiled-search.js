@@ -9814,8 +9814,8 @@
   }();
   function historyRouter() {
     var _ref7 = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {}, _ref7$createURL = _ref7.createURL, createURL = _ref7$createURL === void 0 ? function(_ref8) {
-      var qsModule = _ref8.qsModule, routeState = _ref8.routeState, location = _ref8.location;
-      var protocol = location.protocol, hostname = location.hostname, _location$port = location.port, port = _location$port === void 0 ? "" : _location$port, pathname = location.pathname, hash = location.hash;
+      var qsModule = _ref8.qsModule, routeState = _ref8.routeState, location2 = _ref8.location;
+      var protocol = location2.protocol, hostname = location2.hostname, _location$port = location2.port, port = _location$port === void 0 ? "" : _location$port, pathname = location2.pathname, hash = location2.hash;
       var queryString = qsModule.stringify(routeState);
       var portWithPrefix = port === "" ? "" : ":".concat(port);
       if (!queryString) {
@@ -9823,8 +9823,8 @@
       }
       return "".concat(protocol, "//").concat(hostname).concat(portWithPrefix).concat(pathname, "?").concat(queryString).concat(hash);
     } : _ref7$createURL, _ref7$parseURL = _ref7.parseURL, parseURL = _ref7$parseURL === void 0 ? function(_ref9) {
-      var qsModule = _ref9.qsModule, location = _ref9.location;
-      return qsModule.parse(location.search.slice(1), {
+      var qsModule = _ref9.qsModule, location2 = _ref9.location;
+      return qsModule.parse(location2.search.slice(1), {
         arrayLimit: 99
       });
     } : _ref7$parseURL, _ref7$writeDelay = _ref7.writeDelay, writeDelay = _ref7$writeDelay === void 0 ? 400 : _ref7$writeDelay, windowTitle = _ref7.windowTitle, _ref7$getLocation = _ref7.getLocation, getLocation = _ref7$getLocation === void 0 ? function() {
@@ -13052,10 +13052,26 @@ import { connectSearchBox } from 'instantsearch.js/es/connectors'`);
   // node_modules/instantsearch.js/es/widgets/index.js
   var EXPERIMENTAL_dynamicWidgets = deprecate(dynamic_widgets_default, "use dynamicWidgets");
 
+  // src/getLocalInfo.js
+  function meiliAddress() {
+    let request = new XMLHttpRequest();
+    request.open("GET", `https://${location.host}/technext-interview/resources/addresses/meilisearch-address`, false);
+    request.send();
+    console.log(`status: ${request.status}, text: ${request.statusText}`);
+    return request.responseText;
+  }
+  function meiliPublicSearchKey() {
+    let request = new XMLHttpRequest();
+    request.open("GET", `https://${location.host}/technext-interview/resources/authentication/meili-public-search-key`, false);
+    request.send();
+    console.log(`status: ${request.status}, text: ${request.statusText}`);
+    return request.responseText;
+  }
+
   // src/search-source.js
   var search = es_default({
     indexName: "patents",
-    searchClient: (0, import_instant_meilisearch.instantMeiliSearch)("http://localhost:7700", "628d7d1c524e967c44c8c67c72db2ede011a93ab527e276cc4cee3dec5607c90", {
+    searchClient: (0, import_instant_meilisearch.instantMeiliSearch)(meiliAddress(), meiliPublicSearchKey(), {
       finitePagination: true
     })
   });
