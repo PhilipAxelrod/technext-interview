@@ -13082,7 +13082,8 @@ import { connectSearchBox } from 'instantsearch.js/es/connectors'`);
   var search = es_default({
     indexName: "patents",
     searchClient: (0, import_instant_meilisearch.instantMeiliSearch)(meiliAddress(), meiliPublicSearchKey(), {
-      finitePagination: true
+      finitePagination: true,
+      paginationTotalHits: 1e5
     })
   });
   search.addWidgets([

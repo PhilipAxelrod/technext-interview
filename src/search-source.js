@@ -9,7 +9,8 @@ const search = instantsearch({
         meiliAddress(),
         meiliPublicSearchKey(),
         {
-            finitePagination: true
+            finitePagination: true,
+            paginationTotalHits: 100000
         }
     )
 })
