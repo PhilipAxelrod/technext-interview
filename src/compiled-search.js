@@ -13055,17 +13055,28 @@ import { connectSearchBox } from 'instantsearch.js/es/connectors'`);
   // src/getLocalInfo.js
   function meiliAddress() {
     let request = new XMLHttpRequest();
-    request.open("GET", `https://${location.host}/technext-interview/resources/addresses/meilisearch-address`, false);
+    request.open("GET", `https://${location.host}/resources/addresses/meilisearch-address`, false);
     request.send();
-    console.log(`status: ${request.status}, text: ${request.statusText}`);
-    return request.responseText;
+    if (request.status === 200) {
+      return request.responseText;
+    } else {
+      request.open("GET", `https://${location.host}/technext-interview/resources/addresses/meilisearch-address`, false);
+      request.send();
+      console.log(request.responseText);
+      return request.responseText;
+    }
   }
   function meiliPublicSearchKey() {
     let request = new XMLHttpRequest();
-    request.open("GET", `https://${location.host}/technext-interview/resources/authentication/meili-public-search-key`, false);
+    request.open("GET", `https://${location.host}/resources/authentication/meili-public-search-key`, false);
     request.send();
-    console.log(`status: ${request.status}, text: ${request.statusText}`);
-    return request.responseText;
+    if (request.status === 200) {
+      return request.responseText;
+    } else {
+      request.open("GET", `https://${location.host}/technext-interview/resources/authentication/meili-public-search-key`, false);
+      request.send();
+      return request.responseText;
+    }
   }
 
   // src/search-source.js
